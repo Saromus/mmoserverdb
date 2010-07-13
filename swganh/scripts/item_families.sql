@@ -82,7 +82,8 @@ INSERT INTO `item_families` (`id`,`family_name`,`crate_size`,`crate_type`) VALUE
  (27,'slicing',25,2775),
  (28,'parrot_cage',25,2775),
  (29,'hopper',25,2772),
- (30,'crate',0,0);
+ (30,'crate',0,0),
+ (31,'holocron',0,0);
 /*!40000 ALTER TABLE `item_families` ENABLE KEYS */;
 
 

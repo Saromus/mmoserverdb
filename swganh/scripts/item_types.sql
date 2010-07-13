@@ -2648,7 +2648,9 @@ INSERT INTO `item_types` (`id`,`object_string`,`stf_name`,`stf_file`,`stf_detail
  (2785,'object/tangible/food/foraged/shared_edible_jar_funk.iff','fishing_bait_worm','item_n','fishing_bait_worm','item_d',8215,'0',0,'No',0,1),
  (2786,'object/tangible/food/foraged/shared_edible_jar_funk.iff','fishing_bait_grub','item_n','fishing_bait_grub','item_d',8215,'0',0,'No',0,1),
  (2787,'object/tangible/food/foraged/shared_edible_jar_livers.iff','fishing_bait_chum','item_n','fishing_bait_chum','item_d',8215,'0',0,'No',0,1),
- (2788,'object/tangible/terminal/shared_terminal_ballot_box.iff','terminal_ballot_box','terminal_name','terminal_ballot_box','terminal_details',0,'0',0,'No',0,0);
+ (2788,'object/tangible/terminal/shared_terminal_ballot_box.iff','terminal_ballot_box','terminal_name','terminal_ballot_box','terminal_details',0,'0',0,'No',0,0),
+ (2789,'object/tangible/jedi/shared_jedi_holocron_light.iff','holocron_light','item_n','holocron_light','item_d',8218,'0',0,'No',0,0),
+ (2790,'object/tangible/jedi/shared_jedi_holocron_dark.iff','holocron_dark','item_n','holocron_dark','item_d',8218,'0',0,'No',0,0);
 /*!40000 ALTER TABLE `item_types` ENABLE KEYS */;
 
 

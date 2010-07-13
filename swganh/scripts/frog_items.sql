@@ -2515,7 +2515,10 @@ INSERT INTO `frog_items` (`id`,`itemtype`,`family`,`name`,`active`) VALUES
  (2764,2764,10,'@weapon_name:rifle_ewok_crossbow',1),
  (2765,2765,10,'@weapon_name:rifle_laser_noob',1),
  (2766,2766,10,'@weapon_name:rifle_tenloss_dxr6_disruptor_loo',1),
- (2767,2767,10,'@weapon_name:rifle_victor_tusken',1);
+ (2767,2767,10,'@weapon_name:rifle_victor_tusken',1),
+ (2789,2789,31,'@item_n:holocron_light',1),
+ (2790,2790,31,'@item_n:holocron_dark',1);
+ 
 /*!40000 ALTER TABLE `frog_items` ENABLE KEYS */;
 
 
