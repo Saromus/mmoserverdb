@@ -1,4 +1,4 @@
-﻿/*
+/*
 ---------------------------------------------------------------------------------------
 This source file is part of SWG:ANH (Star Wars Galaxies - A New Hope - Server Emulator)
 
@@ -34,20 +34,26 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 use swganh;
 
 --
--- Definition of procedure `sp_ReturnChatCharChannels`
+-- Definition of procedure `sp_ChatRoomModeratorAdd`
 --
 
-DROP PROCEDURE IF EXISTS `sp_ReturnChatCharChannels`;
+DROP PROCEDURE IF EXISTS `sp_ChatRoomModeratorAdd`;
 
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReturnChatCharChannels`(IN charId BIGINT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ChatRoomModeratorAdd`(IN roomID BIGINT, characterName CHAR)
 BEGIN
-	
-	SELECT A.channel_id
-    FROM swganh.chat_char_channels A
-    WHERE A.character_id = charId;
+
+  ##
+  ## sp_ChatRoomModeratorAdd(roomID, characterName)
+  ##
+  ## Adds a Moderator to a created chatroom
+  ##
+  ## Returns nothing
+  ##
+
+  INSERT INTO chat_channels_moderators VALUES (roomID, characterName);
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

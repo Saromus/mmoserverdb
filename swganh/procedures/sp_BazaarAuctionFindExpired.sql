@@ -1,4 +1,4 @@
-﻿/*
+/*
 ---------------------------------------------------------------------------------------
 This source file is part of SWG:ANH (Star Wars Galaxies - A New Hope - Server Emulator)
 
@@ -34,20 +34,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 use swganh;
 
 --
--- Definition of procedure `sp_ReturnChatCharChannels`
+-- Definition of procedure `sp_BazaarAuctionFindExpired`
 --
 
-DROP PROCEDURE IF EXISTS `sp_ReturnChatCharChannels`;
+DROP PROCEDURE IF EXISTS `sp_BazaarAuctionFindExpired`;
 
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReturnChatCharChannels`(IN charId BIGINT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_BazaarAuctionFindExpired`(IN timeframe BIGINT)
 BEGIN
-	
-	SELECT A.channel_id
-    FROM swganh.chat_char_channels A
-    WHERE A.character_id = charId;
+
+  ##
+  ## sp_BazaarAuctionFindExpired(time)
+  ##
+  ## Returns the list of expired bazaar auctions
+  ##
+
+  SELECT
+    commerce_auction.auction_id,
+    commerce_auction.owner_id,
+    commerce_auction.`type`,
+    commerce_auction.price,
+    commerce_auction.name,
+    commerce_auction.bidder_name,
+    commerce_auction.bazaar_id,
+    characters.firstname,
+    characters.id
+  FROM
+    characters
+  INNER JOIN commerce_auction ON (characters.firstname = commerce_auction.bidder_name)
+  AND (characters.id = commerce_auction.owner_id)
+  WHERE timeframe > commerce_auction.start;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

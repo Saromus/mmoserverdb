@@ -1,4 +1,4 @@
-﻿/*
+/*
 ---------------------------------------------------------------------------------------
 This source file is part of SWG:ANH (Star Wars Galaxies - A New Hope - Server Emulator)
 
@@ -34,20 +34,51 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 use swganh;
 
 --
--- Definition of procedure `sp_ReturnChatCharChannels`
+-- Definition of procedure `sp_CSRTicketGet`
 --
 
-DROP PROCEDURE IF EXISTS `sp_ReturnChatCharChannels`;
+DROP PROCEDURE IF EXISTS `sp_CSRTicketGet`;
 
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReturnChatCharChannels`(IN charId BIGINT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_CSRTicketGet`(IN charID BIGINT)
 BEGIN
-	
-	SELECT A.channel_id
-    FROM swganh.chat_char_channels A
-    WHERE A.character_id = charId;
+
+  ##
+  ## sp_CSRTicketGet (character_id)
+  ##
+  ## Retrieves the open CSR tickets by character ID
+  ##
+  ## Returns (tickets)
+  ##
+
+  SELECT
+    csr_tickets.ticket_id,
+    characters.firstname,
+    csr_categories.category_id,
+    csr_subcategories.subcategory_id,
+    csr_tickets.comment,
+    csr_tickets.info,
+    csr_tickets.harrasing_user,
+    csr_tickets.language,
+    csr_tickets.bugreport,
+    csr_tickets.activity,
+    csr_tickets.closed,
+    csr_tickets.lastmodified
+  FROM
+    csr_tickets
+  JOIN
+    characters ON
+    (csr_tickets.character_id = characters.id)
+  JOIN
+    csr_subcategories ON
+    (csr_tickets.subcategory_id = csr_subcategories.subcategory_index)
+  JOIN
+    csr_categories ON
+    (csr_subcategories.category_id = csr_categories.category_id)
+  WHERE
+    (csr_tickets.bugreport = 1) && (csr_tickets.character_id = charID);
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

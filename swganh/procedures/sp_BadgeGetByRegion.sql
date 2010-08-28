@@ -1,4 +1,4 @@
-﻿/*
+/*
 ---------------------------------------------------------------------------------------
 This source file is part of SWG:ANH (Star Wars Galaxies - A New Hope - Server Emulator)
 
@@ -34,20 +34,38 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 use swganh;
 
 --
--- Definition of procedure `sp_ReturnChatCharChannels`
+-- Definition of procedure `sp_BadgeGetByRegion`
 --
 
-DROP PROCEDURE IF EXISTS `sp_ReturnChatCharChannels`;
+DROP PROCEDURE IF EXISTS `sp_BadgeGetByRegion`;
 
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReturnChatCharChannels`(IN charId BIGINT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_BadgeGetByRegion`(IN regionID BIGINT)
 BEGIN
-	
-	SELECT A.channel_id
-    FROM swganh.chat_char_channels A
-    WHERE A.character_id = charId;
+
+  ##
+  ## sp_BadgeGetByRegion (region_id)
+  ##
+  ## ...
+  ##
+  ## Returns badge details
+  ##
+
+  SELECT
+    badge_regions.id,
+    badge_regions.badge_id,
+    planet_regions.region_name,
+    planet_regions.region_file,
+    planet_regions.x,
+    planet_regions.z,
+    planet_regions.width,
+    planet_regions.height,
+    badge_regions.parent_id
+  FROM badge_regions
+  INNER JOIN planet_regions ON (badge_regions.region_id = planet_regions.region_id)
+  WHERE (badge_regions.id = regionID);
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$

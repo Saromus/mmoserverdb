@@ -1,4 +1,4 @@
-﻿/*
+/*
 ---------------------------------------------------------------------------------------
 This source file is part of SWG:ANH (Star Wars Galaxies - A New Hope - Server Emulator)
 
@@ -34,21 +34,36 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 use swganh;
 
 --
--- Definition of procedure `sp_ReturnChatCharChannels`
+-- Definition of procedure `sp_CSRTicketAdd`
 --
 
-DROP PROCEDURE IF EXISTS `sp_ReturnChatCharChannels`;
+DROP PROCEDURE IF EXISTS `sp_CSRTicketAdd`;
 
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReturnChatCharChannels`(IN charId BIGINT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_CSRTicketAdd`(IN playerName TEXT, category INT, subCategory INT, ticketcomment TEXT, info TEXT, harrassing TEXT, lang CHAR(2), bugreport TINYINT(1))
 BEGIN
-	
-	SELECT A.channel_id
-    FROM swganh.chat_char_channels A
-    WHERE A.character_id = charId;
 
+  ##
+  ## Stored Procedure
+  ##
+  ## Use: CALL sp_CSRTicketAdd(playerName, category, subcategory, comment, info, harrassing, language, bugreport);
+  ##
+  ## Returns: (ticket id)
+  
+  DECLARE character_id BIGINT(20);
+  DECLARE subcategory_id INT;
+  DECLARE inserted INT;
+
+  SELECT id FROM characters WHERE characters.firstname = SUBSTRING_INDEX(playerName, ' ', 1) INTO character_id;
+  SELECT csr_subcategories.subcategory_index FROM csr_subcategories WHERE (csr_subcategories.subcategory_id = subCategory) AND (csr_subcategories.category_id = category) INTO subcategory_id;
+
+  INSERT INTO csr_tickets VALUES (NULL, subcategory_id, ticketcomment, info, harrassing, lang, bugreport, character_id, 0, 0, UNIX_TIMESTAMP());
+
+  SELECT MAX(ticket_id) FROM csr_tickets INTO inserted;
+
+  SELECT inserted;
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 

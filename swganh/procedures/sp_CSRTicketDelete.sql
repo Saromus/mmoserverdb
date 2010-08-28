@@ -1,4 +1,4 @@
-﻿/*
+/*
 ---------------------------------------------------------------------------------------
 This source file is part of SWG:ANH (Star Wars Galaxies - A New Hope - Server Emulator)
 
@@ -34,22 +34,33 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 use swganh;
 
 --
--- Definition of procedure `sp_ReturnChatCharChannels`
+-- Definition of procedure `sp_CSRTicketDelete`
 --
 
-DROP PROCEDURE IF EXISTS `sp_ReturnChatCharChannels`;
+DROP PROCEDURE IF EXISTS `sp_CSRTicketDelete`;
 
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReturnChatCharChannels`(IN charId BIGINT)
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_CSRTicketDelete`(IN mticket_id BIGINT)
 BEGIN
-	
-	SELECT A.channel_id
-    FROM swganh.chat_char_channels A
-    WHERE A.character_id = charId;
+
+  ##
+  ## sp_CSRDeleteTicket (mticket_id)
+  ##
+  ## Returns (nothing)
+
+  ## Delete ticket
+
+  ## DELETE FROM swganh.csr_comments WHERE ticket_id = mticket_id;
+  DELETE FROM swganh.csr_tickets WHERE ticket_id = mticket_id;
+
+  ##
+  ## Exit
 
 END $$
+
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
 
 DELIMITER ;

@@ -1,4 +1,4 @@
-﻿/*
+/*
 ---------------------------------------------------------------------------------------
 This source file is part of SWG:ANH (Star Wars Galaxies - A New Hope - Server Emulator)
 
@@ -34,20 +34,44 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 use swganh;
 
 --
--- Definition of procedure `sp_ReturnChatCharChannels`
+-- Definition of procedure `sp_ServerStatusUpdate`
 --
 
-DROP PROCEDURE IF EXISTS `sp_ReturnChatCharChannels`;
+DROP PROCEDURE IF EXISTS `sp_ServerStatusUpdate`;
 
 DELIMITER $$
 
 /*!50003 SET @TEMP_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */ $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ReturnChatCharChannels`(IN charId BIGINT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_ServerStatusUpdate`(IN serverName CHAR(64), serverStatus INT, serverAddress CHAR(64), serverPort INT)
 BEGIN
-	
-	SELECT A.channel_id
-    FROM swganh.chat_char_channels A
-    WHERE A.character_id = charId;
+
+  ##
+  ## sp_ServerStatusUpdate ()
+  ##
+  ## Updates the status of the server
+  ##
+  ## Returns nothing
+  ##
+
+  ##
+  ## Update ip address, port & status of service
+
+  IF serverAddress IS NOT NULL THEN
+    UPDATE config_process_list SET address = serverAddress, port = serverPort, status = serverStatus WHERE name = serverName;
+  END IF;
+
+  ##
+  ## Update status
+
+  IF serverAddress AND serverPort IS NULL THEN
+    UPDATE config_process_list SET status = serverStatus WHERE name = serverName;
+  END IF;
+
+  ## Update ServerID
+
+  IF serverStatus AND serverAddress AND serverPort IS NULL THEN
+    UPDATE config_process_list SET serverstartID = serverstartID + 1 WHERE name like servername;
+  END IF;
 
 END $$
 /*!50003 SET SESSION SQL_MODE=@TEMP_SQL_MODE */  $$
